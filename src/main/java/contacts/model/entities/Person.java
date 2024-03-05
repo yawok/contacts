@@ -1,6 +1,6 @@
-package contacts.model;
+package contacts.model.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Person {
 	private int id;
@@ -10,10 +10,10 @@ public class Person {
 	private String phoneNumber;
 	private String address;
 	private String emailAddress;
-	private Date birthDate;
+	private LocalDate birthDate;
 	
 	public Person(int id, String lastname, String firstname, String nickname, String phoneNumber, String address,
-			String emailAddress, Date birthDate) {
+			String emailAddress, LocalDate birthDate) {
 		super();
 		this.id = id;
 		this.lastname = lastname;
@@ -84,11 +84,11 @@ public class Person {
 		this.emailAddress = emailAddress;
 	}
 
-	public Date getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 	
