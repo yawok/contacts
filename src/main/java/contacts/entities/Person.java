@@ -27,6 +27,10 @@ public class Person {
 
 	public Person() {
 	}
+	
+	public String getFullName() {
+		return firstname + " " + lastname.toUpperCase();
+	}
 
 	public int getId() {
 		return id;

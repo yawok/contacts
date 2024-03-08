@@ -23,10 +23,10 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         stage.setTitle("Project");
         mainlayout = loadFXML("MainLayout");
-        scene = new Scene(mainlayout, 640, 480);
+        scene = new Scene(mainlayout);
         stage.setScene(scene);
         stage.show();
-        App.showView("ManagePersons");
+        App.showView("PeopleManager");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class App extends Application {
                     "    address VARCHAR(200) NULL," +
                     "    email_address VARCHAR(150) NULL," +
                     "    birth_date DATE NULL);");
-            stmt.executeUpdate("DELETE FROM person");
+            // stmt.executeUpdate("DELETE FROM person");
             //TODO insert some data here
         } catch(SQLException e) {
             e.printStackTrace();

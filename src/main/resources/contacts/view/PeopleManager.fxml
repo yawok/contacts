@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="contacts.view.PeopleManagerController">
+   <children>
+      <SplitPane dividerPositions="0.29797979797979796" prefHeight="400.0" prefWidth="600.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="175.0">
+               <children>
+                  <TableView fx:id="peopleTable" prefHeight="370.0" prefWidth="177.0">
+                     <columns>
+                        <TableColumn fx:id="personColumn" prefWidth="174.7299826145172" text="People" />
+                     </columns>
+                  </TableView>
+                  <Button layoutX="-1.0" layoutY="321.0" mnemonicParsing="false" onAction="#handleAddButton" prefHeight="30.0" prefWidth="177.0" text="Add Person" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="417.0">
+               <children>
+                  <GridPane fx:id="formGrid" alignment="center" hgap="10" layoutX="-2.0" layoutY="-1.0" maxHeight="400.0" maxWidth="600.0" prefHeight="400.0" prefWidth="423.0" vgap="10">
+                  
+                      <Label text="First Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                      <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                  
+                      <Label text="Last Name" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                      <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  
+                      <Label text="Nickname" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                      <TextField fx:id="nicknameField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  
+                      <Label text="Phone number" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                      <TextField fx:id="phoneNumberField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  
+                      <Label text="Address" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                      <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  
+                      <Label text="Email Address" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                      <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  
+                      <Label text="Date of Birth (yyyy-mm-dd):" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                  
+                      <Button onAction="#handleSaveButton" text="Save" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="10" />
+                  
+                      <Button onAction="#handleDeleteButton" text="Delete" GridPane.columnSpan="2" GridPane.rowIndex="10" />
+                     <DatePicker fx:id="birthDateField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                     <columnConstraints>
+                        <ColumnConstraints maxWidth="174.041748046875" minWidth="160.09967041015625" prefWidth="171.25726318359375" />
+                        <ColumnConstraints maxWidth="154.90032958984375" minWidth="140.958251953125" prefWidth="144.74273681640625" />
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints maxHeight="50.0" minHeight="21.514480590820312" prefHeight="25.0" />
+                        <RowConstraints maxHeight="28.485519409179688" minHeight="0.0" prefHeight="25.0" />
+                        <RowConstraints />
+                        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+                        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+                        <RowConstraints fillHeight="false" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
+                     </rowConstraints>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
