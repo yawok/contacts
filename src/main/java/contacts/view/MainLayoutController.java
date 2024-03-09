@@ -8,8 +8,9 @@ public class MainLayoutController {
         Platform.exit();
     }
 
+    public void goToListPersons() { App.showView("ListPersons"); }
 
     public void goToManagePersons() {
-        App.showView("ManagePersons");
+        App.showView("PeopleManager");
     }
 }

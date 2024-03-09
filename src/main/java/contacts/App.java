@@ -23,7 +23,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         stage.setTitle("Project");
         mainlayout = loadFXML("MainLayout");
-        scene = new Scene(mainlayout);
+        scene = new Scene(mainlayout, 640, 480);
         stage.setScene(scene);
         stage.show();
         App.showView("PeopleManager");
@@ -42,8 +42,11 @@ public class App extends Application {
                     "    address VARCHAR(200) NULL," +
                     "    email_address VARCHAR(150) NULL," +
                     "    birth_date DATE NULL);");
-            // stmt.executeUpdate("DELETE FROM person");
-            //TODO insert some data here
+            stmt.executeUpdate("DELETE FROM person");
+            stmt.executeUpdate("INSERT INTO person(idperson, lastname, firstname, nickname, phone_number, address, email_address, birth_date) VALUES (1, 'PETIT', 'Sarah', 'SarahPetit', '0600000000', '1 rue NomRue 59000 Lille', 'sarah.petit@student.junia.com', '2000-01-01 00:00:00.000')");
+            stmt.executeUpdate("INSERT INTO person(idperson, lastname, firstname, nickname, phone_number, address, email_address, birth_date) VALUES (2, 'OBENG', 'Kenneth', 'KennethObeng', '0600000000', '1 rue NomRue 59000 Lille', 'kenneth-yaw.obeng@student.junia.com', '2000-01-01 00:00:00.000')");
+            stmt.executeUpdate("INSERT INTO person(idperson, lastname, firstname, nickname, phone_number, address, email_address, birth_date) VALUES (3, 'AGYEI-KANE', 'Michael', 'MichaelAgyeiKane', '0600000000', '1 rue NomRue 59000 Lille', 'michael.agyei-kane@student.junia.com', '2000-01-01 00:00:00.000')");
+            stmt.close();
         } catch(SQLException e) {
             e.printStackTrace();
         }

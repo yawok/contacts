@@ -1,22 +1,13 @@
 package contacts.view;
 
-import java.time.LocalDate;
-
-import contacts.dao.PersonDao;
 import contacts.entities.Person;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import contacts.service.PersonService;
+import contacts.utils.PersonValueFactory;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import utilities.PersonValueFactory;
+
+import java.time.LocalDate;
 
 
 public class PeopleManagerController {
@@ -41,11 +32,8 @@ public class PeopleManagerController {
     private TextField nicknameField;
     @FXML
     private TextField emailField;
-    
-    private ObservableList<Person> people;
-    private Person currentPerson;
 
-    private PersonDao personDao = new PersonDao();
+    private Person currentPerson;
 
     @FXML 
     private void handleSaveButton() {
@@ -56,8 +44,7 @@ public class PeopleManagerController {
     	currentPerson.setAddress(addressField.getText());
     	currentPerson.setEmailAddress(emailField.getText());
     	currentPerson.setBirthDate(birthDateField.getValue());
-    	personDao.updatePerson(currentPerson);
-    	refreshList();
+		PersonService.updatePerson(currentPerson);
     	resetView();
     }
     
@@ -67,15 +54,14 @@ public class PeopleManagerController {
 		alert.setTitle("Delete " + currentPerson.getFullName() + "?");
 		alert.setHeaderText("Are you sure you want to delete " + currentPerson.getFullName() + "?");
 		alert.showAndWait().filter(response -> response == ButtonType.OK).ifPresent(response -> deleteCurrentPerson());
-		resetView();
     }
     
     private void deleteCurrentPerson() {
-    	int personID = currentPerson.getId();
     	int selectedIndex = peopleTable.getSelectionModel().getSelectedIndex();
-    	if (selectedIndex >= 0) {    	
-    		personDao.deletePersonByID(personID);
+    	if (selectedIndex >= 0) {
+			PersonService.deletePerson(currentPerson);
     		peopleTable.getItems().remove(selectedIndex);
+			resetView();
     	}
     }
     
@@ -86,8 +72,7 @@ public class PeopleManagerController {
     	newPerson.setLastname("Enter last name");
     	newPerson.setNickname("Enter nickname");
     	newPerson.setBirthDate(LocalDate.now());
-    	personDao.addPerson(newPerson);
-    	people.add(newPerson);
+    	PersonService.addPerson(newPerson);
     	peopleTable.getSelectionModel().select(newPerson);
     }
     
@@ -96,22 +81,13 @@ public class PeopleManagerController {
     	personColumn.setCellValueFactory(new PersonValueFactory());
     	populateList();
     	peopleTable.getSelectionModel().selectedItemProperty().addListener(
-    		new ChangeListener<Person>() {
-
-				@Override
-				public void changed(ObservableValue<? extends Person> observable, Person oldValue, Person newValue) {
-					showPersonDetails(newValue);
-				}
-    			
-    		});
+                (observable, oldValue, newValue) -> showPersonDetails(newValue));
     	resetView();
     }
     
     
 	private void populateList() {
-    	people = FXCollections.observableArrayList();
-    	people.addAll(personDao.listPerson());
-    	peopleTable.setItems(people);
+		peopleTable.setItems(PersonService.getPersons());
     	refreshList();
     }
 
@@ -123,6 +99,7 @@ public class PeopleManagerController {
     private void resetView() {
     	showPersonDetails(null);
     	refreshList();
+		peopleTable.getSelectionModel().select(currentPerson);
     }
     
     private void showPersonDetails(Person person) {
@@ -138,7 +115,6 @@ public class PeopleManagerController {
     		addressField.setText(currentPerson.getAddress());
     		emailField.setText(currentPerson.getEmailAddress());
     		birthDateField.setValue(currentPerson.getBirthDate());
-    		
     	}
     }
 }
