@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import contacts.dao.PersonDao;
 import contacts.entities.Person;
+import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -36,7 +37,7 @@ public class PeopleManagerController {
     @FXML
     private TextField addressField;
     @FXML
-    private DatePicker birthDateField;
+    private MFXDatePicker birthDateField;
     @FXML
     private TextField nicknameField;
     @FXML

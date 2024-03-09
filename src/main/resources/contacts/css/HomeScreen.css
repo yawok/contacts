@@ -1,0 +1,31 @@
+.anchor-pane {
+	-fx-background-color: #fff;
+	-fx-text-align: center;
+}
+
+.label {
+	-fx-font-weight: bold;
+	-fx-font-size: 40px;
+}
+
+
+.button { 
+	-fx-text-fill: #0076f5;
+	-fx-background-color: #fff;
+	-fx-border-color: #0076f5;
+	-fx-border-radius: 10px;
+	-fx-padding: 10px 20px;
+	-fx-font-weight: bold;
+	-fx-font-size: 14px;
+	
+}
+
+.button:hover {
+	-fx-text-fill: #fff;
+	-fx-background-color: #0076f5;
+	-fx-border-color: #0076f5;
+	-fx-border-radius: 10px;
+	-fx-padding: 10px 20px;
+	-fx-font-weight: bold;
+	-fx-font-size: 14px;
+}

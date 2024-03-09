@@ -21,12 +21,12 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        stage.setTitle("Project");
+        stage.setTitle("Contacts");
         mainlayout = loadFXML("MainLayout");
         scene = new Scene(mainlayout);
         stage.setScene(scene);
         stage.show();
-        App.showView("PeopleManager");
+        App.showView("HomeScreen");
     }
 
     @Override
