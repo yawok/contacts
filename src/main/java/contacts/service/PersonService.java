@@ -46,13 +46,13 @@ public class PersonService {
                 case "Address" -> listFiltered = listFiltered.stream()
                         .filter(x -> x.getAddress().contains(filterValue))
                         .toList();
-                case "Email" -> listFiltered = PersonServiceHolder.INSTANCE.persons.stream()
+                case "Email" -> listFiltered = listFiltered.stream()
                         .filter(x -> x.getEmailAddress().contains(filterValue))
                         .toList();
-                case "BirthDate" -> listFiltered = PersonServiceHolder.INSTANCE.persons.stream()
+                case "BirthDate" -> listFiltered = listFiltered.stream()
                         .filter(x -> x.getBirthDate().toString().equals(filterValue))
                         .toList();
-                case "Category" -> listFiltered = PersonServiceHolder.INSTANCE.persons.stream()
+                case "Category" -> listFiltered = listFiltered.stream()
                         .filter(x -> x.getCategory().getCategoryName().contains(filterValue))
                         .toList();
             }

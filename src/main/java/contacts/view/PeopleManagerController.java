@@ -132,7 +132,10 @@ public class PeopleManagerController {
 		listFilters.add("Category");
 		filter.setItems(listFilters);
 		filterValue.textProperty().addListener((observable, oldValue, newValue) -> {
-			filterBy(newValue);
+			filterBy();
+		});
+		filter.valueProperty().addListener((observable, oldValue, newValue) -> {
+			filterBy();
 		});
 	}
     
@@ -152,8 +155,10 @@ public class PeopleManagerController {
 		peopleTable.getSelectionModel().select(currentPerson);
     }
 
-	private void filterBy(String value) {
-		PersonService.filterBy(filter.getSelectionModel().getSelectedItem(), value);
+	private void filterBy() {
+		if(filter.getSelectionModel().getSelectedItem() != null) {
+			PersonService.filterBy(filter.getSelectionModel().getSelectedItem(), filterValue.getText());
+		}
 	}
     
     private void showPersonDetails(Person person) {
