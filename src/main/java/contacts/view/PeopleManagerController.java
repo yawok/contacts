@@ -2,10 +2,6 @@ package contacts.view;
 
 import contacts.entities.Person;
 import io.github.palexdev.materialfx.controls.MFXDatePicker;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import contacts.service.PersonService;
 import contacts.utils.PersonValueFactory;
 import javafx.fxml.FXML;
