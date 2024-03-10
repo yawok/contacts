@@ -1,8 +1,13 @@
 package contacts.view;
 
+import contacts.entities.Category;
 import contacts.entities.Person;
+import contacts.service.CategoryService;
 import contacts.service.PersonService;
+import contacts.utils.CategoryNameValueFactory;
 import contacts.utils.PersonValueFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -32,6 +37,13 @@ public class PeopleManagerController {
     private TextField nicknameField;
     @FXML
     private TextField emailField;
+	@FXML
+	private ComboBox<Category> categoryField;
+
+	@FXML
+	private ComboBox<String> filter;
+	@FXML
+	private TextField filterValue;
 
     private Person currentPerson;
 
@@ -44,6 +56,7 @@ public class PeopleManagerController {
     	currentPerson.setAddress(addressField.getText());
     	currentPerson.setEmailAddress(emailField.getText());
     	currentPerson.setBirthDate(birthDateField.getValue());
+		currentPerson.setCategory(categoryField.getSelectionModel().getSelectedItem());
 		PersonService.updatePerson(currentPerson);
     	resetView();
     }
@@ -72,6 +85,7 @@ public class PeopleManagerController {
     	newPerson.setLastname("Enter last name");
     	newPerson.setNickname("Enter nickname");
     	newPerson.setBirthDate(LocalDate.now());
+		newPerson.setCategory(CategoryService.getByName("Other"));
     	PersonService.addPerson(newPerson);
     	peopleTable.getSelectionModel().select(newPerson);
     }
@@ -82,9 +96,45 @@ public class PeopleManagerController {
     	populateList();
     	peopleTable.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> showPersonDetails(newValue));
+
+		populateCategoryComboBox();
+		populateFilterBy();
+
     	resetView();
     }
-    
+
+	private  void populateCategoryComboBox() {
+		categoryField.setCellFactory(new CategoryNameValueFactory());
+		categoryField.setButtonCell(new ListCell<Category>() {
+			@Override
+			protected void updateItem(Category item, boolean empty) {
+				super.updateItem(item, empty);
+
+				if (item == null || empty) {
+					setText(null);
+				} else {
+					setText(item.getCategoryName());
+				}
+			}
+		});
+		categoryField.setItems(CategoryService.getCategories());
+	}
+
+	private void populateFilterBy() {
+		ObservableList<String> listFilters = FXCollections.observableArrayList();
+		listFilters.add("Lastname");
+		listFilters.add("Firstname");
+		listFilters.add("Nickname");
+		listFilters.add("Phone number");
+		listFilters.add("Address");
+		listFilters.add("Email");
+		listFilters.add("BirthDate");
+		listFilters.add("Category");
+		filter.setItems(listFilters);
+		filterValue.textProperty().addListener((observable, oldValue, newValue) -> {
+			filterBy(newValue);
+		});
+	}
     
 	private void populateList() {
 		peopleTable.setItems(PersonService.getPersons());
@@ -101,6 +151,10 @@ public class PeopleManagerController {
     	refreshList();
 		peopleTable.getSelectionModel().select(currentPerson);
     }
+
+	private void filterBy(String value) {
+		PersonService.filterBy(filter.getSelectionModel().getSelectedItem(), value);
+	}
     
     private void showPersonDetails(Person person) {
     	if (person == null) {
@@ -115,6 +169,7 @@ public class PeopleManagerController {
     		addressField.setText(currentPerson.getAddress());
     		emailField.setText(currentPerson.getEmailAddress());
     		birthDateField.setValue(currentPerson.getBirthDate());
+			categoryField.getSelectionModel().select(currentPerson.getCategory());
     	}
     }
 }

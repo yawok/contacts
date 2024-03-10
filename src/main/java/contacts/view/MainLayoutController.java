@@ -8,7 +8,9 @@ public class MainLayoutController {
         Platform.exit();
     }
 
-    public void goToListPersons() { App.showView("ListPersons"); }
+    public void goToHome() { App.showView("HomeScreen"); }
+
+    public void goToManageCategories() { App.showView("CategoryManager"); }
 
     public void goToManagePersons() {
         App.showView("PeopleManager");

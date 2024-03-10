@@ -1,6 +1,7 @@
 package contacts.dao;
 
 import contacts.entities.Person;
+import contacts.service.CategoryService;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -21,13 +22,14 @@ public class PersonDao {
                     while (resultSet.next())
                     {
                         Person person = new Person(resultSet.getInt("idperson"),
-                                resultSet.getString("firstname"),
                                 resultSet.getString("lastname"),
+                                resultSet.getString("firstname"),
                                 resultSet.getString("nickname"),
                                 resultSet.getString("phone_number"),
                                 resultSet.getString("address"),
                                 resultSet.getString("email_address"),
-                                resultSet.getDate("birth_date").toLocalDate());
+                                resultSet.getDate("birth_date").toLocalDate(),
+                                CategoryService.getByName(resultSet.getString("category")));
                         allPersons.add(person);
                     }
                     return allPersons;
@@ -41,8 +43,8 @@ public class PersonDao {
 
 
     public Person addPerson(Person person) {
-        String query = "INSERT INTO person(lastname, firstname, nickname, phone_number, address, email_address, birth_date)"
-                + " VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO person(lastname, firstname, nickname, phone_number, address, email_address, birth_date, category)"
+                + " VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
         try(Connection connection = getConnection())
         {
             try(PreparedStatement statement = connection.prepareStatement(query))
@@ -54,6 +56,7 @@ public class PersonDao {
                 statement.setString(5, person.getAddress());
                 statement.setString(6, person.getEmailAddress());
                 statement.setDate(7, Date.valueOf(person.getBirthDate()));
+                statement.setString(8, person.getCategory().getCategoryName());
 
                 statement.executeUpdate();
                 try (ResultSet resultId = statement.getGeneratedKeys())
@@ -80,13 +83,14 @@ public class PersonDao {
         		+ "    phone_number=?,"
         		+ "    address=?,"
         		+ "    email_address=?,"
-        		+ "    birth_date=?"
+        		+ "    birth_date=?,"
+                + "    category=?"
         		+ "WHERE idperson=?;";
         try(Connection connection = getConnection())
         {
             try(PreparedStatement statement = connection.prepareStatement(query))
             {
-                statement.setInt(8, person.getId());
+                statement.setInt(9, person.getId());
                 statement.setString(1, person.getLastname());
                 statement.setString(2, person.getFirstname());
                 statement.setString(3, person.getNickname());
@@ -94,6 +98,7 @@ public class PersonDao {
                 statement.setString(5, person.getAddress());
                 statement.setString(6, person.getEmailAddress());
                 statement.setDate(7, Date.valueOf(person.getBirthDate()));
+                statement.setString(8, person.getCategory().getCategoryName());
 
                 statement.executeUpdate();
             }
@@ -119,7 +124,8 @@ public class PersonDao {
                                            resultSet.getString("phone_number"),
                                            resultSet.getString("address"),
                                            resultSet.getString("email_address"),
-                                           resultSet.getDate("birth_date").toLocalDate());
+                                           resultSet.getDate("birth_date").toLocalDate(),
+                                           CategoryService.getByName(resultSet.getString("category")));
                      }
                  }
              }

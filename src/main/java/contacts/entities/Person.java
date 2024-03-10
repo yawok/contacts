@@ -11,10 +11,11 @@ public class Person {
 	private String address;
 	private String emailAddress;
 	private LocalDate birthDate;
+
+	private Category category;
 	
 	public Person(int id, String lastname, String firstname, String nickname, String phoneNumber, String address,
-			String emailAddress, LocalDate birthDate) {
-		super();
+			String emailAddress, LocalDate birthDate, Category category) {
 		this.id = id;
 		this.lastname = lastname;
 		this.firstname = firstname;
@@ -23,6 +24,7 @@ public class Person {
 		this.address = address;
 		this.emailAddress = emailAddress;
 		this.birthDate = birthDate;
+		this.category = category;
 	}
 
 	public Person() {
@@ -95,5 +97,12 @@ public class Person {
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
-	
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 }

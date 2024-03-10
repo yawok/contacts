@@ -2,6 +2,7 @@ package daoTest;
 
 import contacts.dao.PersonDao;
 import contacts.entities.Person;
+import contacts.service.CategoryService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,11 +30,12 @@ public class PersonDaoTest {
                     "    phone_number VARCHAR(15) NULL," +
                     "    address VARCHAR(200) NULL," +
                     "    email_address VARCHAR(150) NULL," +
-                    "    birth_date DATE NULL);");
+                    "    birth_date DATE NULL," +
+                    "    category VARCHAR(50) NULL);");
             stmt.executeUpdate("DELETE FROM person");
-            stmt.executeUpdate("INSERT INTO person(idperson, lastname, firstname, nickname, phone_number, address, email_address, birth_date) VALUES (1, 'PETIT', 'Sarah', 'SarahPetit', '0600000000', '1 rue NomRue 59000 Lille', 'sarah.petit@student.junia.com', '2000-01-01 00:00:00.000')");
-            stmt.executeUpdate("INSERT INTO person(idperson, lastname, firstname, nickname, phone_number, address, email_address, birth_date) VALUES (2, 'OBENG', 'Kenneth', 'KennethObeng', '0600000000', '1 rue NomRue 59000 Lille', 'kenneth-yaw.obeng@student.junia.com', '2000-01-01 00:00:00.000')");
-            stmt.executeUpdate("INSERT INTO person(idperson, lastname, firstname, nickname, phone_number, address, email_address, birth_date) VALUES (3, 'AGYEI-KANE', 'Michael', 'MichaelAgyeiKane', '0600000000', '1 rue NomRue 59000 Lille', 'michael.agyei-kane@student.junia.com', '2000-01-01 00:00:00.000')");
+            stmt.executeUpdate("INSERT INTO person(idperson, lastname, firstname, nickname, phone_number, address, email_address, birth_date, category) VALUES (1, 'PETIT', 'Sarah', 'SarahPetit', '0600000000', '1 rue NomRue 59000 Lille', 'sarah.petit@student.junia.com', '2000-01-01 00:00:00.000', 'Work Acquaintance')");
+            stmt.executeUpdate("INSERT INTO person(idperson, lastname, firstname, nickname, phone_number, address, email_address, birth_date, category) VALUES (2, 'OBENG', 'Kenneth', 'KennethObeng', '0600000000', '1 rue NomRue 59000 Lille', 'kenneth-yaw.obeng@student.junia.com', '2000-01-01 00:00:00.000', 'Work Acquaintance')");
+            stmt.executeUpdate("INSERT INTO person(idperson, lastname, firstname, nickname, phone_number, address, email_address, birth_date, category) VALUES (3, 'AGYEI-KANE', 'Michael', 'MichaelAgyeiKane', '0600000000', '1 rue NomRue 59000 Lille', 'michael.agyei-kane@student.junia.com', '2000-01-01 00:00:00.000', 'Work Acquaintance')");
             stmt.close();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -49,10 +51,10 @@ public class PersonDaoTest {
 
         //THEN
         assertThat(personList).hasSize(3);
-        assertThat(personList).extracting(Person::getId, Person::getLastname, Person::getFirstname, Person::getNickname, Person::getPhoneNumber, Person::getAddress, Person::getEmailAddress, Person::getBirthDate)
-                .containsOnly(tuple(1, "PETIT", "Sarah", "SarahPetit", "0600000000", "1 rue NomRue 59000 Lille", "sarah.petit@student.junia.com", LocalDate.parse("2000-01-01"))
-                        , tuple(2, "OBENG", "Kenneth", "KennethObeng", "0600000000", "1 rue NomRue 59000 Lille", "kenneth-yaw.obeng@student.junia.com", LocalDate.parse("2000-01-01"))
-                        , tuple(3, "AGYEI-KANE", "Michael", "MichaelAgyeiKane", "0600000000", "1 rue NomRue 59000 Lille", "michael.agyei-kane@student.junia.com", LocalDate.parse("2000-01-01")));
+        assertThat(personList).extracting(Person::getId, Person::getLastname, Person::getFirstname, Person::getNickname, Person::getPhoneNumber, Person::getAddress, Person::getEmailAddress, Person::getBirthDate, Person::getCategory)
+                .containsOnly(tuple(1, "PETIT", "Sarah", "SarahPetit", "0600000000", "1 rue NomRue 59000 Lille", "sarah.petit@student.junia.com", LocalDate.parse("2000-01-01"), CategoryService.getByName("Work Acquaintance"))
+                        , tuple(2, "OBENG", "Kenneth", "KennethObeng", "0600000000", "1 rue NomRue 59000 Lille", "kenneth-yaw.obeng@student.junia.com", LocalDate.parse("2000-01-01"), CategoryService.getByName("Work Acquaintance"))
+                        , tuple(3, "AGYEI-KANE", "Michael", "MichaelAgyeiKane", "0600000000", "1 rue NomRue 59000 Lille", "michael.agyei-kane@student.junia.com", LocalDate.parse("2000-01-01"), CategoryService.getByName("Work Acquaintance")));
     }
 
     @Test
@@ -73,6 +75,7 @@ public class PersonDaoTest {
         assertThat(resultPerson.getAddress()).isEqualTo("1 rue NomRue 59000 Lille");
         assertThat(resultPerson.getEmailAddress()).isEqualTo("sarah.petit@student.junia.com");
         assertThat(resultPerson.getBirthDate()).isEqualTo(LocalDate.parse("2000-01-01"));
+        assertThat(resultPerson.getCategory().getCategoryName()).isEqualTo("Work Acquaintance");
     }
 
     @Test
@@ -90,7 +93,7 @@ public class PersonDaoTest {
     @Test
     public void shouldAddPerson() {
         //GIVEN
-        Person personToAdd = new Person(1, "New", "Person", "NewPerson", "0600000000", "an address", "new.person@gmail.com", LocalDate.parse("2000-01-01"));
+        Person personToAdd = new Person(1, "New", "Person", "NewPerson", "0600000000", "an address", "new.person@gmail.com", LocalDate.parse("2000-01-01"), CategoryService.getByName("Work Acquaintance"));
 
         //WHEN
         Person resultPerson = personDao.addPerson(personToAdd);
@@ -105,12 +108,13 @@ public class PersonDaoTest {
         assertThat(resultPerson.getAddress()).isEqualTo("an address");
         assertThat(resultPerson.getEmailAddress()).isEqualTo("new.person@gmail.com");
         assertThat(resultPerson.getBirthDate()).isEqualTo(LocalDate.parse("2000-01-01"));
+        assertThat(resultPerson.getCategory().getCategoryName()).isEqualTo("Work Acquaintance");
     }
 
     @Test
     public void shouldUpdatePerson() {
         //GIVEN
-        Person personToUpdate = new Person(1, "Person", "Updated", "PersonUpdated", "0600000001", "new address", "person.updated@gmail.com", LocalDate.parse("2000-01-02"));
+        Person personToUpdate = new Person(1, "Person", "Updated", "PersonUpdated", "0600000001", "new address", "person.updated@gmail.com", LocalDate.parse("2000-01-02"), CategoryService.getByName("Work Acquaintance"));
 
         //WHEN
         personDao.updatePerson(personToUpdate);
@@ -131,6 +135,7 @@ public class PersonDaoTest {
                     assertThat(resultSet.getString("address")).isEqualTo("new address");
                     assertThat(resultSet.getString("email_address")).isEqualTo("person.updated@gmail.com");
                     assertThat(resultSet.getDate("birth_date")).isEqualTo(Date.valueOf("2000-01-02"));
+                    assertThat(resultSet.getString("category")).isEqualTo("Work Acquaintance");
                     assertThat(resultSet.next()).isFalse();
                 }
             }
@@ -142,7 +147,7 @@ public class PersonDaoTest {
     @Test
     public void shouldNotUpdateUnknownPerson() {
         //GIVEN
-        Person personToUpdate = new Person(4, "Person", "Updated", "PersonUpdated", "0600000001", "new address", "person.updated@gmail.com", LocalDate.parse("2000-01-02"));
+        Person personToUpdate = new Person(4, "Person", "Updated", "PersonUpdated", "0600000001", "new address", "person.updated@gmail.com", LocalDate.parse("2000-01-02"), CategoryService.getByName("Work Acquaintance"));
 
         //WHEN
         personDao.updatePerson(personToUpdate);
