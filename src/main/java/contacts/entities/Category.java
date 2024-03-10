@@ -11,7 +11,6 @@ public class Category {
     }
 
     public Category() {
-
     }
 
     public String getCategoryName() {

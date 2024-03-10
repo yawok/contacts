@@ -47,6 +47,10 @@ public class PeopleManagerController {
 
     private Person currentPerson;
 
+	/**
+	 * When we click on the "Save" button
+	 * we call the service to update the person
+	 */
     @FXML 
     private void handleSaveButton() {
     	currentPerson.setFirstname(firstNameField.getText());
@@ -60,7 +64,11 @@ public class PeopleManagerController {
 		PersonService.updatePerson(currentPerson);
     	resetView();
     }
-    
+
+	/**
+	 * When we click on the "Delete" button
+	 * we show an alert to be sure that we didn't click by error
+	 */
     @FXML 
     private void handleDeleteButton() {
     	Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -68,7 +76,10 @@ public class PeopleManagerController {
 		alert.setHeaderText("Are you sure you want to delete " + currentPerson.getFullName() + "?");
 		alert.showAndWait().filter(response -> response == ButtonType.OK).ifPresent(response -> deleteCurrentPerson());
     }
-    
+
+	/**
+	 * We call the service to delete the person in the database
+	 */
     private void deleteCurrentPerson() {
     	int selectedIndex = peopleTable.getSelectionModel().getSelectedIndex();
     	if (selectedIndex >= 0) {
@@ -77,7 +88,11 @@ public class PeopleManagerController {
 			resetView();
     	}
     }
-    
+
+	/**
+	 * When we click on the "Add a person" button
+	 * we call the service to add the person in the database
+	 */
     @FXML 
     private void handleAddButton() {
     	Person newPerson = new Person();
@@ -89,7 +104,13 @@ public class PeopleManagerController {
     	PersonService.addPerson(newPerson);
     	peopleTable.getSelectionModel().select(newPerson);
     }
-    
+
+	/**
+	 * When we arrive on the page we fill the list with persons
+	 * We add the listener to show the category details when we select a person in the list
+	 * We populate the dropdown menu of "category" with all the categories that exists
+	 * We populate the dropdown menu of "filter by"
+	 */
     @FXML
     private void initialize() {
     	personColumn.setCellValueFactory(new PersonValueFactory());
@@ -103,6 +124,9 @@ public class PeopleManagerController {
     	resetView();
     }
 
+	/**
+	 * We put all our categories as options in the dropdown menu "category"
+	 */
 	private  void populateCategoryComboBox() {
 		categoryField.setCellFactory(new CategoryNameValueFactory());
 		categoryField.setButtonCell(new ListCell<Category>() {
@@ -120,6 +144,10 @@ public class PeopleManagerController {
 		categoryField.setItems(CategoryService.getCategories());
 	}
 
+	/**
+	 * We put all attributes of a person as options in the dropdown menu "filter by"
+	 * We add listeners on the "filter by" menu and the field next to it to change the content of the list of persons whenever we change one of this two things
+	 */
 	private void populateFilterBy() {
 		ObservableList<String> listFilters = FXCollections.observableArrayList();
 		listFilters.add("Lastname");
@@ -155,12 +183,20 @@ public class PeopleManagerController {
 		peopleTable.getSelectionModel().select(currentPerson);
     }
 
+	/**
+	 * We call the service to get the list of persons filtered
+	 */
 	private void filterBy() {
 		if(filter.getSelectionModel().getSelectedItem() != null) {
 			PersonService.filterBy(filter.getSelectionModel().getSelectedItem(), filterValue.getText());
 		}
 	}
-    
+
+	/**
+	 * When we clicked on a person in the list we will show the details on the right of the page
+	 * @param person
+	 *               the person that we have selected
+	 */
     private void showPersonDetails(Person person) {
     	if (person == null) {
     		formGrid.setVisible(false);

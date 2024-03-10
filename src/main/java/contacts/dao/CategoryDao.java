@@ -13,6 +13,12 @@ import static contacts.dao.DataSourceFactory.getConnection;
 
 public class CategoryDao {
 
+    /**
+     * Get list of all categories in the database
+     *
+     * @return
+     *          the list of all the categories
+     */
     public List<Category> getAllCategories() {
         List<Category> allCategories = new LinkedList<>();
         String query = "SELECT * FROM category";
@@ -38,6 +44,14 @@ public class CategoryDao {
     }
 
 
+    /**
+     * Add a category in the database
+     *
+     * @param category
+     *              the category that we want to add
+     * @return
+     *              the category that has been added in the database
+     */
     public Category addCategory(Category category) {
         String query = "INSERT INTO category(name) VALUES(?)";
         try(Connection connection = getConnection())
@@ -63,6 +77,12 @@ public class CategoryDao {
     }
 
 
+    /**
+     * Update a category in the database
+     *
+     * @param category
+     *              the category we want to update
+     */
     public void updateCategory(Category category) {
         String query = "UPDATE category "
                 + "SET name=?"
@@ -81,6 +101,12 @@ public class CategoryDao {
         }
     }
 
+    /**
+     * Delete a category
+     *
+     * @param id
+     *          the id of the category we want to delete
+     */
     public void deleteCategory(int id){
         String query = "DELETE FROM category WHERE idcategory=?";
 
