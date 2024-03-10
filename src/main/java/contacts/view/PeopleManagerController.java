@@ -1,7 +1,6 @@
 package contacts.view;
 
 import contacts.entities.Person;
-import io.github.palexdev.materialfx.controls.MFXDatePicker;
 import contacts.service.PersonService;
 import contacts.utils.PersonValueFactory;
 import javafx.fxml.FXML;
@@ -28,7 +27,7 @@ public class PeopleManagerController {
     @FXML
     private TextField addressField;
     @FXML
-    private MFXDatePicker birthDateField;
+    private DatePicker birthDateField;
     @FXML
     private TextField nicknameField;
     @FXML
